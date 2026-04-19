@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: health-management
+    runtime: java
+    buildCommand: ./mvnw clean install -DskipTests
+    startCommand: java -jar target/HealthManagement-0.0.1-SNAPSHOT.jar
