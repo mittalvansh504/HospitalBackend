@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/chatGpt")
 public class ChatController {
 
-    private static final Logger logger = (Logger) LoggerFactory.getLogger(PatientController.class);
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(ChatController.class);
 
     @Autowired
     public final ChatService chatService;
