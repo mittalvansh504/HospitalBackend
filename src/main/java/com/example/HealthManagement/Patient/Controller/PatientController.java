@@ -24,7 +24,6 @@ public class PatientController {
 
     @GetMapping("/getpatientbyname/{patientName}")
     public Patient getpatientbyname(@PathVariable String patientName){
-
         return patientInterface.getpatientbyname(patientName);
     }
 
