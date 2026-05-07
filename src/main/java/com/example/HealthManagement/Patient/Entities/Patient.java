@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class Patient {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long patientId;
@@ -21,10 +20,8 @@ public class Patient {
     private String lastName;
     private String email;
     private Date dob;
-
     @OneToMany(mappedBy = "patient")
     private List<Booking> bookings;
-
     private String phoneNo;
     private String addressLine1;
     private String addressLine2;

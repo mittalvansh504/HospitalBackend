@@ -1,6 +1,5 @@
 package com.example.HealthManagement.Doctor.Requests;
 
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
