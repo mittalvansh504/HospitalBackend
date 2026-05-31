@@ -7,8 +7,12 @@ import com.example.HealthManagement.Patient.Request.RequestForPatientLogin;
 
 public interface PatientInterface {
     Patient addpatient(RequestForPatient requestForPatient) throws Exception;
-    Patient getpatientbyname(String patientName);
 
     Patient loginpatient(RequestForPatientLogin requestForPatientLogin);
+
+    Patient getpatientbypatientid(String patientId);
+
     Patient getpatient(String email_id);
+
+    Patient updatepatientbypatientid(String patientId, RequestForPatient requestForPatient);
 }

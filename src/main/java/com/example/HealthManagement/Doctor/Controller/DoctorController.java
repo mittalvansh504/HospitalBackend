@@ -1,6 +1,7 @@
 package com.example.HealthManagement.Doctor.Controller;
 
 
+import com.example.HealthManagement.Doctor.Entities.Degree;
 import com.example.HealthManagement.Doctor.Entities.Doctor;
 import com.example.HealthManagement.Doctor.Entities.DoctorDto;
 import com.example.HealthManagement.Doctor.Repository.DoctorRepository;
@@ -23,6 +24,16 @@ public class DoctorController {
     @Autowired
     private DoctorRepository doctorRepository;
 
+    @PostMapping("/adddegree")
+    public Degree adddegree(@RequestBody Degree degree){
+        return doctorInterface.adddegree(degree);
+    }
+
+    @GetMapping("/alldegree")
+    public List<Degree> alldegree(){
+        return doctorInterface.alldegree();
+    }
+
     @PostMapping("/registration")
     public Doctor postdoctor(@RequestBody RequestForDoctor requestForDoctor){
         return doctorInterface.postdoctor(requestForDoctor);
@@ -33,8 +44,13 @@ public class DoctorController {
         return doctorInterface.logindoctor(requestForLogin);
     }
 
-    @GetMapping("/by-department/{departmentId}")
-    public List<DoctorDto> getDoctorsByDepartments(@PathVariable Long departmentId){
-        return doctorInterface.getDoctorsByDepartment(departmentId);
+    @GetMapping("/getdoctorbydoctorid/{doctorId}")
+    public Doctor getdoctorbydoctorId(@PathVariable String doctorId){
+        return doctorInterface.getdoctorbydoctorid(doctorId);
+    }
+
+    @PutMapping("/updatedoctordata/{doctorId}")
+    public Doctor updatedoctordata(@PathVariable String doctorId, @RequestBody RequestForDoctor requestForDoctor){
+        return doctorInterface.updatedoctordata(doctorId, requestForDoctor);
     }
 }

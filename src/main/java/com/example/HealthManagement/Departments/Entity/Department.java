@@ -1,37 +1,26 @@
 package com.example.HealthManagement.Departments.Entity;
 
-import com.example.HealthManagement.Doctor.Entities.Doctor;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
-import java.util.Set;
 
-
-@Entity
+@Document(collection = "department")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class Department {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long departmentId;
+    private String departmentId;
 
-    @Column(name = "department_name")
     private String deptName;
 
-    private LocalDate createdOn;
+    private LocalDate createdOn = LocalDate.now();
 
-    @ManyToMany(mappedBy = "departments")
-    @JsonIgnore
-    private Set<Doctor> doctors;
+    private boolean active = true;
 
-    @PrePersist
-    public void setCreatedOn(){
-        this.createdOn = LocalDate.now();
-    }
 }

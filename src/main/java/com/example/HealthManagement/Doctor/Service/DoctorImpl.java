@@ -2,8 +2,10 @@ package com.example.HealthManagement.Doctor.Service;
 
 import com.example.HealthManagement.Departments.Entity.Department;
 import com.example.HealthManagement.Departments.Repository.DepartmentRepository;
+import com.example.HealthManagement.Doctor.Entities.Degree;
 import com.example.HealthManagement.Doctor.Entities.Doctor;
 import com.example.HealthManagement.Doctor.Entities.DoctorDto;
+import com.example.HealthManagement.Doctor.Repository.DegreeRepository;
 import com.example.HealthManagement.Doctor.Repository.DoctorRepository;
 import com.example.HealthManagement.Doctor.Requests.RequestForDoctor;
 import com.example.HealthManagement.Doctor.Requests.RequestForLogin;
@@ -12,9 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Service
@@ -28,6 +28,20 @@ public class DoctorImpl implements DoctorInterface {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private DegreeRepository degreeRepository;
+
+
+    @Override
+    public Degree adddegree(Degree degree) {
+        return degreeRepository.save(degree);
+    }
+
+    @Override
+    public List<Degree> alldegree() {
+        return degreeRepository.findAll();
+    }
 
     @Override
     public Doctor postdoctor(RequestForDoctor requestForDoctor) {
@@ -44,35 +58,35 @@ public class DoctorImpl implements DoctorInterface {
             throw new RuntimeException("Doctor already exists with this phone number");
         }
 
-        Set<Department> departments = new HashSet<>();
+        Department departmentInDbByName = departmentRepository.findByDeptName(requestForDoctor.getDepartmentName());
+        if(departmentInDbByName.getDeptName() == null || departmentInDbByName.getDeptName().isEmpty()){
+            throw new RuntimeException("Provided DepartmentName does not exist in database");
+        }
 
-        for (String deptName : requestForDoctor.getDepartmentNames()) {
-
-            Department department = departmentRepository
-                    .findByDeptName(deptName)
-                    .orElseThrow(() -> new RuntimeException("Department not found: " + deptName));
-
-            departments.add(department);
+        Degree degreeInDBByName = degreeRepository.findByDegreeName(requestForDoctor.getDegree());
+        if(degreeInDBByName.getDegreeName() == null || degreeInDBByName.getDegreeName().isEmpty()){
+            throw new RuntimeException("Degree is not exist in our database");
         }
 
         Doctor doctor = new Doctor();
+
         doctor.setDoctorName(requestForDoctor.getDoctorName());
         doctor.setDoctorEmail(requestForDoctor.getDoctorEmail());
         doctor.setPhoneNo(requestForDoctor.getPhoneNo());
         doctor.setDoctorDob(requestForDoctor.getDoctorDob());
         doctor.setDegree(requestForDoctor.getDegree());
-        doctor.setDepartments(departments);
+        doctor.setExperience(requestForDoctor.getExperience());
+        doctor.setDepartmentName(requestForDoctor.getDepartmentName());
         doctor.setAddressLine1(requestForDoctor.getAddressLine1());
         doctor.setAddressLine2(requestForDoctor.getAddressLine2());
 
-        String encodedPassword = passwordEncoder.encode(requestForDoctor.getPassword());
+        String encodedPassword = passwordEncoder.encode(requestForDoctor.getPassword()) ;
         doctor.setPassword(encodedPassword);
 
         doctorRepository.save(doctor);
 
         return doctor;
     }
-
 
     @Override
     public DoctorDto logindoctor(RequestForLogin requestForLogin) {
@@ -91,15 +105,25 @@ public class DoctorImpl implements DoctorInterface {
     }
 
     @Override
-    public List<DoctorDto> getDoctorsByDepartment(Long deptId) {
-        List<Doctor> doctors = doctorRepository.findByDepartmentsDepartmentId(deptId);
+    public Doctor getdoctorbydoctorid(String doctorId) {
+        Doctor doctor = doctorRepository.findByDoctorId(doctorId);
+        return doctor;
+    }
 
-        return doctors.stream()
-                .map(doc -> new DoctorDto(
-                        doc.getDoctorId(),
-                        doc.getDoctorName()
-                ))
-                .toList();
+    @Override
+    public Doctor updatedoctordata(String doctorId, RequestForDoctor requestForDoctor) {
+        Doctor existingDoctor = doctorRepository.findByDoctorId(doctorId);
+        if(existingDoctor == null){
+            throw new RuntimeException("Doctor Not exist");
+        }
+
+        existingDoctor.setDegree(requestForDoctor.getDegree());
+        existingDoctor.setExperience(requestForDoctor.getExperience());
+        existingDoctor.setDepartmentName(requestForDoctor.getDepartmentName());
+        existingDoctor.setAddressLine1(requestForDoctor.getAddressLine1());
+        existingDoctor.setAddressLine2(requestForDoctor.getAddressLine2());
+
+        return doctorRepository.save(existingDoctor);
     }
 
 }

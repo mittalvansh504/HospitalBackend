@@ -1,12 +1,8 @@
 package com.example.HealthManagement.Appointment.Entities;
 
-import com.example.HealthManagement.Departments.Entity.Department;
-import com.example.HealthManagement.Doctor.Entities.Doctor;
-import com.example.HealthManagement.Patient.Entities.Patient;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.*;
-
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -14,43 +10,29 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Document(collection = "bookings")
 public class Booking {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long slotNo;
-
-    @Column(unique = true, nullable = false)
     private String bookingId;
+    private String slotNo = "SLOT-" + UUID.randomUUID().toString().substring(0,5);
 
-    private String patientName;
-    private LocalDate patientDob;
-    private String patientPhone;
-    private String patientAddress;
 
-    @ManyToOne
-    @JoinColumn(name = "department_id")
-    private Department department;
+    private String patientId;
+//    private String relation;
+//
+//    private String patientName;
+//    private LocalDate patientDob;
+//    private String patientPhone;
+//    private String patientAddress;
 
-    @ManyToOne
-    @JoinColumn(name = "doctor_id")
-    @JsonIgnore
-    private Doctor doctor;
+    private String departmentId;
 
-    @ManyToOne
-    @JoinColumn(name = "patient_id")
-    @JsonIgnore
-    private Patient patient;
-
+    private String doctorId;
 
     private String disease;
     private LocalDate appointmentDate;
 
-    @PrePersist
-    public void generateValues() {
-        if (this.bookingId == null) {
-            this.bookingId = UUID.randomUUID().toString();
-        }
-    }
+    private LocalDate createdOn = LocalDate.now();
+    private boolean active = true;
 }
