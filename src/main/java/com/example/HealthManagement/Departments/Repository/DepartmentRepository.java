@@ -1,11 +1,14 @@
 package com.example.HealthManagement.Departments.Repository;
 
 import com.example.HealthManagement.Departments.Entity.Department;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
-import java.util.Optional;
 
-public interface DepartmentRepository extends JpaRepository<Department, Long> {
-    Optional<Department> findByDeptName(String deptName);
+public interface DepartmentRepository extends MongoRepository<Department, String> {
 
+    @Query("{deptName:'?0'}")
+    Department findByDeptName(String deptName);
+
+    Department findByDepartmentId(String departmentId);
 }

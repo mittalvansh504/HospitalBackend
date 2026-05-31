@@ -1,33 +1,38 @@
 package com.example.HealthManagement.Patient.Entities;
 
-import com.example.HealthManagement.Appointment.Entities.Booking;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.Date;
-import java.util.List;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Document(collection = "patient")
 public class Patient {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long patientId;
-    private String firstName;
-    private String lastName;
+    private String patientId;
+    private String patientName;
     private String email;
-    private Date dob;
-    @OneToMany(mappedBy = "patient")
-    private List<Booking> bookings;
     private String phoneNo;
-    private String addressLine1;
-    private String addressLine2;
+    private LocalDate patientDOB;
+    private String fatherName;
+    private String motherName;
+
+    private String permanentAddress;
+    private String currentAddress;
     private String password;
 
     @Transient
     private String confirmPassword;
 
+    private LocalDateTime createdOn = LocalDateTime.now();
+    private boolean active = true;
 }

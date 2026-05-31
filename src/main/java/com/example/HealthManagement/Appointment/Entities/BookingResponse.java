@@ -12,6 +12,9 @@ import java.time.LocalDate;
 public class BookingResponse {
     private String bookingId;
     private String patientName;
+    private LocalDate patientDob;
+    private String patientPhone;
+    private String patientAddress;
     private String doctorName;
     private String disease;
     private LocalDate appointmentDate;

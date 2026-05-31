@@ -11,14 +11,15 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class RequestForBooking {
 
-    private String patientName;
-    private LocalDate patientDob;
-    private String patientPhone;
-    private String patientAddress;
+    private String patientId;
+//    private String relation;
+//    private String patientName;
+//    private LocalDate patientDob;
+//    private String patientPhone;
+//    private String patientAddress;
 
-    private Long departmentId;
-    private Long doctorId;
-    private Long patientId;
+    private String departmentId;
+    private String doctorId;
 
     private String disease;
     private LocalDate appointmentDate;

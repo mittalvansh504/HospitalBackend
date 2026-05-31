@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -11,13 +12,15 @@ import java.util.Date;
 @NoArgsConstructor
 public class RequestForPatient {
 
-    private String firstName;
-    private String lastName;
+    private String patientName;
     private String email;
-    private Date dob;
     private String phoneNo;
-    private String addressLine1;
-    private String addressLine2;
+    private LocalDate patientDOB;
+    private String fatherName;
+    private String motherName;
+
+    private String permanentAddress;
+    private String currentAddress;
     private String password;
     private String confirmPassword;
 }

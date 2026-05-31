@@ -1,21 +1,18 @@
 package com.example.HealthManagement.Doctor.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Document(collection = "hospital")
 public class NewHospital {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String hosId;
     private String hospitalName;
     private String hospitalAddress;

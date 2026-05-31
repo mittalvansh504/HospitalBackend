@@ -22,18 +22,19 @@ public class PatientController {
         return patientInterface.addpatient(requestForPatient);
     }
 
-    @GetMapping("/getpatientbyname/{patientName}")
-    public Patient getpatientbyname(@PathVariable String patientName){
-        return patientInterface.getpatientbyname(patientName);
-    }
-
     @PostMapping("/loginpatient")
     public Patient loginpatient(@RequestBody RequestForPatientLogin requestForPatientLogin){
         return patientInterface.loginpatient(requestForPatientLogin);
     }
 
-    @GetMapping("/getpatientbyid/{email_id}")
-    public Patient getpatient(@PathVariable String email_id){
-        return patientInterface.getpatient(email_id);
+    @GetMapping("/getpatientbypatientid/{patientId}")
+    public Patient getpatientbypatientid(@PathVariable String patientId){
+        return patientInterface.getpatientbypatientid(patientId);
     }
+
+    @PutMapping("/updatepatientbypatientid/{patientId}")
+    public Patient updatepatientbypatientid(@PathVariable String patientId, @RequestBody RequestForPatient requestForPatient){
+        return patientInterface.updatepatientbypatientid(patientId, requestForPatient);
+    }
+
 }

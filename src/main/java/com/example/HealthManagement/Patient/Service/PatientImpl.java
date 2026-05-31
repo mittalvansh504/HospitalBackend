@@ -1,10 +1,12 @@
 package com.example.HealthManagement.Patient.Service;
 
+import com.example.HealthManagement.Doctor.Entities.Doctor;
 import com.example.HealthManagement.Patient.Entities.Patient;
 import com.example.HealthManagement.Patient.Repository.PatientRepository;
 import com.example.HealthManagement.Patient.Request.RequestForPatient;
 import com.example.HealthManagement.Patient.Request.RequestForPatientLogin;
 import com.example.HealthManagement.Patient.Interface.PatientInterface;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,25 +31,22 @@ public class PatientImpl implements PatientInterface {
         if (patientRepository.existsByPhoneno(requestForPatient.getPhoneNo()) != null) {
             throw new RuntimeException("Patient already exists with this phone number");
         }
+
         Patient patient = new Patient();
-        patient.setFirstName(requestForPatient.getFirstName());
-        patient.setLastName(requestForPatient.getLastName());
+        patient.setPatientName(requestForPatient.getPatientName());
         patient.setEmail(requestForPatient.getEmail());
         patient.setPhoneNo(requestForPatient.getPhoneNo());
-        patient.setDob(requestForPatient.getDob());
-        patient.setAddressLine1(requestForPatient.getAddressLine1());
-        patient.setAddressLine2(requestForPatient.getAddressLine2());
+        patient.setPatientDOB(requestForPatient.getPatientDOB());
+        patient.setFatherName(requestForPatient.getFatherName());
+        patient.setMotherName(requestForPatient.getMotherName());
+        patient.setPermanentAddress(requestForPatient.getPermanentAddress());
+        patient.setCurrentAddress(requestForPatient.getCurrentAddress());
 
         String encodedPassword = passwordEncoder.encode(requestForPatient.getPassword());
         patient.setPassword(encodedPassword);
 
         patientRepository.save(patient);
         return patient;
-    }
-
-    @Override
-    public Patient getpatientbyname(String patientName) {
-        return patientRepository.getpatientbyname(patientName);
     }
 
     @Override
@@ -58,13 +57,28 @@ public class PatientImpl implements PatientInterface {
         if (!passwordEncoder.matches(requestForPatientLogin.getPassword().trim(), patient.getPassword())) {
             throw new RuntimeException("Invalid Email or Password");
         }
-
         return patient;
+    }
 
+    @Override
+    public Patient getpatientbypatientid(String patientId) {
+        Patient patient = patientRepository.findByPatientId(patientId);
+        return patient;
     }
 
     @Override
     public Patient getpatient(String email_id) {
-        return patientRepository.getpatient(email_id);
+        return patientRepository.existsByEmail(email_id);
+    }
+
+    @Override
+    public Patient updatepatientbypatientid(String patientId, RequestForPatient requestForPatient) {
+        Patient patient = patientRepository.findByPatientId(patientId);
+
+        if(patient == null){
+            throw new RuntimeException("Patient is not exist with this Id");
+        }
+        patient.setCurrentAddress(requestForPatient.getCurrentAddress());
+        return patientRepository.save(patient);
     }
 }

@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class DoctorDto {
-    private Long doctorId;
+    private String doctorId;
     private String doctorName;
 }

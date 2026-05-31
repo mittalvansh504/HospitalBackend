@@ -20,9 +20,19 @@ public class DepartmentController {
         return departmentInterface.saveDepartment(department);
     }
 
-
     @GetMapping("/getalldepartment")
     public List<Department> getDepartments(){
         return departmentInterface.getAllDepartments();
+    }
+
+    @GetMapping("/departmentByDepartmentId/{departmentId}")
+    public Department getDepartments(@PathVariable String departmentId){
+
+        return departmentInterface.getDepartmentNameById(departmentId);
+    }
+
+    @GetMapping("/departmentByDepartmentName/{departmentName}")
+    public Department departmentByDepartmentName(@PathVariable String departmentName){
+        return departmentInterface.getDepartmentByDepartmentName(departmentName);
     }
 }

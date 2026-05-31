@@ -1,4 +1,4 @@
-package com.example.HealthManagement.Patient.Entities;
+package com.example.HealthManagement.Doctor.Entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,13 +9,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "contact")
-public class Contact {
+@Document(collection = "degree")
+public class Degree {
 
     @Id
-    private String patientId;
-    private String name;
-    private String email;
-    private String phoneNo;
-    private String queryArea;
+    private String degreeId;
+    private String degreeName;
 }
