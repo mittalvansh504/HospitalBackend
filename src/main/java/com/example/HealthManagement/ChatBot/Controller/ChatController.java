@@ -33,7 +33,7 @@ public class ChatController {
         return "Working";
     }
 
-    @PostMapping("/api/version4/chat/chatWithGpt")
+    @PostMapping("/api/Version4/Chat/ChatWithGpt")
     public ResponseEntity<String> generateResponse(
             @RequestBody ChatRequest request
     ) {

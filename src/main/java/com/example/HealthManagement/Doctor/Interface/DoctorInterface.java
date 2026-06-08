@@ -12,15 +12,16 @@ import java.util.List;
 
 public interface DoctorInterface {
 
-    Degree adddegree(Degree degree);
+    Degree addDegree(Degree degree);
 
-    List<Degree> alldegree();
+    List<Degree> allDegree();
 
-    Doctor postdoctor(RequestForDoctor requestForDoctor);
+    Doctor postDoctor(RequestForDoctor requestForDoctor);
 
-    DoctorDto logindoctor(RequestForLogin requestForLogin);
+    DoctorDto loginDoctor(RequestForLogin requestForLogin);
 
-    Doctor getdoctorbydoctorid(String doctorId);
+    Doctor getDoctorByDoctorId(String doctorId);
 
-    Doctor updatedoctordata(String doctorId, RequestForDoctor requestForDoctor);
+    Doctor updateDoctorData(String doctorId, RequestForDoctor requestForDoctor);
+
 }

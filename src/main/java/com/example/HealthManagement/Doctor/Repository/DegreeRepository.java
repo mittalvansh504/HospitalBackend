@@ -6,6 +6,6 @@ import org.springframework.data.mongodb.repository.Query;
 
 public interface DegreeRepository extends MongoRepository<Degree, String> {
 
-    @Query("{degreeName:'?0'}")
-    Degree findByDegreeName(String degreeName);
+    @Query("{degreeId:'?0'}")
+    Degree findByDegreeId(String degreeId);
 }

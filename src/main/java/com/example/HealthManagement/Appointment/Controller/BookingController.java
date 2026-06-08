@@ -1,7 +1,6 @@
 package com.example.HealthManagement.Appointment.Controller;
 
-
-import com.example.HealthManagement.Appointment.Entities.Booking;
+import com.example.HealthManagement.Appointment.Entities.BookingHistoryResponse;
 import com.example.HealthManagement.Appointment.Interface.BookingInterface;
 import com.example.HealthManagement.Appointment.Entities.BookingResponse;
 import com.example.HealthManagement.Appointment.Request.RequestForBooking;
@@ -21,25 +20,25 @@ public class BookingController {
     @Autowired
     private BookingInterface bookingInterface;
 
-//    @GetMapping("/gettingpatientdata/{patientId}")
-//    public Patient gettingpatientdata(@PathVariable String patientId){
-//        return bookingInterface.gettingpatientdata(patientId);
-//    }
-
-    @PostMapping("/createbooking")
+    @PostMapping("/createBooking")
     public BookingResponse createBooking(@RequestBody RequestForBooking requestForBooking){
         return bookingInterface.createBooking(requestForBooking);
     }
 
     @GetMapping("/doctor/getAllAppointmentsForDoctor/{doctorId}")
-    public List<Booking> getAllAppointmentsForDoctor(@PathVariable String doctorId){
-        logger.info("inside controller for getAllAppointmentsForDoctor");
+    public List<BookingHistoryResponse> getAllAppointmentsForDoctor(@PathVariable String doctorId){
+        logger.info("inside controller for get All Appointments For Doctor");
         return bookingInterface.getAllAppointmentsForDoctor(doctorId);
     }
 
-    @GetMapping("/patient/appointments/{patientId}")
-    public List<Booking> getAllAppointmentsForPatient(@PathVariable String patientId){
+    @GetMapping("/patient/getAllAppointmentsForPatient/{patientId}")
+    public List<BookingHistoryResponse> getAllAppointmentsForPatient(@PathVariable String patientId){
         logger.info("inside controller for getAllAppointmentsForPatient");
         return bookingInterface.getAllAppointmentsForPatient(patientId);
+    }
+
+    @PutMapping("/markVisited/{bookingId}")
+    public String markVisited(@PathVariable String bookingId){
+        return bookingInterface.markVisited(bookingId);
     }
 }

@@ -10,5 +10,6 @@ public interface DepartmentRepository extends MongoRepository<Department, String
     @Query("{deptName:'?0'}")
     Department findByDeptName(String deptName);
 
+    @Query("{departmentId:?0}")
     Department findByDepartmentId(String departmentId);
 }
