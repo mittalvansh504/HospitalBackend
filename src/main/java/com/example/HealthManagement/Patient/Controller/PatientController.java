@@ -17,24 +17,24 @@ public class PatientController {
     @Autowired
     private PatientInterface patientInterface;
 
-    @PostMapping("/signup")
-    public Patient addpatient(@RequestBody RequestForPatient requestForPatient) throws Exception {
-        return patientInterface.addpatient(requestForPatient);
+    @PostMapping("/addPatient")
+    public Patient addPatient(@RequestBody RequestForPatient requestForPatient) throws Exception {
+        return patientInterface.addPatient(requestForPatient);
     }
 
-    @PostMapping("/loginpatient")
-    public Patient loginpatient(@RequestBody RequestForPatientLogin requestForPatientLogin){
-        return patientInterface.loginpatient(requestForPatientLogin);
+    @PostMapping("/loginPatient")
+    public Patient loginPatient(@RequestBody RequestForPatientLogin requestForPatientLogin){
+        return patientInterface.loginPatient(requestForPatientLogin);
     }
 
-    @GetMapping("/getpatientbypatientid/{patientId}")
-    public Patient getpatientbypatientid(@PathVariable String patientId){
-        return patientInterface.getpatientbypatientid(patientId);
+    @GetMapping("/getPatientByPatientId/{patientId}")
+    public Patient getPatientByPatientId(@PathVariable String patientId){
+        return patientInterface.getPatientByPatientId(patientId);
     }
 
-    @PutMapping("/updatepatientbypatientid/{patientId}")
+    @PutMapping("/updatePatientByPatientId/{patientId}")
     public Patient updatepatientbypatientid(@PathVariable String patientId, @RequestBody RequestForPatient requestForPatient){
-        return patientInterface.updatepatientbypatientid(patientId, requestForPatient);
+        return patientInterface.updatePatientByPatientId(patientId, requestForPatient);
     }
 
 }

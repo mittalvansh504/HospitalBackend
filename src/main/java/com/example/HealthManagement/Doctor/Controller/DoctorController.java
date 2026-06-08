@@ -24,33 +24,35 @@ public class DoctorController {
     @Autowired
     private DoctorRepository doctorRepository;
 
-    @PostMapping("/adddegree")
-    public Degree adddegree(@RequestBody Degree degree){
-        return doctorInterface.adddegree(degree);
+    @PostMapping("/addDegree")
+    public Degree addDegree(@RequestBody Degree degree){
+        return doctorInterface.addDegree(degree);
     }
 
-    @GetMapping("/alldegree")
-    public List<Degree> alldegree(){
-        return doctorInterface.alldegree();
+    @GetMapping("/allDegree")
+    public List<Degree> allDegree(){
+        return doctorInterface.allDegree();
     }
 
-    @PostMapping("/registration")
-    public Doctor postdoctor(@RequestBody RequestForDoctor requestForDoctor){
-        return doctorInterface.postdoctor(requestForDoctor);
+    @PostMapping("/postDoctor")
+    public Doctor postDoctor(@RequestBody RequestForDoctor requestForDoctor){
+        return doctorInterface.postDoctor(requestForDoctor);
     }
 
     @PostMapping("/loginDoctor")
-    public DoctorDto logindoctor(@RequestBody RequestForLogin requestForLogin){
-        return doctorInterface.logindoctor(requestForLogin);
+    public DoctorDto loginDoctor(@RequestBody RequestForLogin requestForLogin){
+        return doctorInterface.loginDoctor(requestForLogin);
     }
 
-    @GetMapping("/getdoctorbydoctorid/{doctorId}")
-    public Doctor getdoctorbydoctorId(@PathVariable String doctorId){
-        return doctorInterface.getdoctorbydoctorid(doctorId);
+    @GetMapping("/getDoctorByDoctorId/{doctorId}")
+    public Doctor getDoctorByDoctorId(@PathVariable String doctorId){
+        return doctorInterface.getDoctorByDoctorId(doctorId);
     }
 
-    @PutMapping("/updatedoctordata/{doctorId}")
-    public Doctor updatedoctordata(@PathVariable String doctorId, @RequestBody RequestForDoctor requestForDoctor){
-        return doctorInterface.updatedoctordata(doctorId, requestForDoctor);
+    @PutMapping("/updateDoctorData/{doctorId}")
+    public Doctor updateDoctorData(@PathVariable String doctorId, @RequestBody RequestForDoctor requestForDoctor){
+        return doctorInterface.updateDoctorData(doctorId, requestForDoctor);
     }
+
+
 }

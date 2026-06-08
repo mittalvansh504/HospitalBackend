@@ -22,10 +22,10 @@ public class Doctor {
     private String doctorEmail;
     private String phoneNo;
     private LocalDate doctorDob;
-    private String degree;
+    private String degreeId;
     private int experience;
 
-    private String departmentName;
+    private String departmentId;
 
     private String addressLine1;
     private String addressLine2;

@@ -1,5 +1,7 @@
 package com.example.HealthManagement.Appointment.Service;
 
+import com.example.HealthManagement.Appointment.Entities.AppointmentStatus;
+import com.example.HealthManagement.Appointment.Entities.BookingHistoryResponse;
 import com.example.HealthManagement.Appointment.Interface.BookingInterface;
 import com.example.HealthManagement.Appointment.Repository.BookingRepository;
 import com.example.HealthManagement.Appointment.Entities.Booking;
@@ -14,6 +16,8 @@ import com.example.HealthManagement.Patient.Repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -38,6 +42,11 @@ public class Bookingimpl implements BookingInterface {
     @Override
     public BookingResponse createBooking(RequestForBooking requestForBooking) {
 
+        Patient patientByDb = patientRepository.findByPatientId(requestForBooking.getPatientId());
+        if(patientByDb == null){
+            throw new RuntimeException("Patient is not exist");
+        }
+
         Department departmentByDb = departmentRepository.findByDepartmentId(requestForBooking.getDepartmentId());
         if (departmentByDb == null) {
             throw new RuntimeException("Department is not exist with this department name");
@@ -48,15 +57,18 @@ public class Bookingimpl implements BookingInterface {
             throw new RuntimeException("Doctor does not exist");
         }
 
-        Patient patientByDb = patientRepository.findByPatientId(requestForBooking.getPatientId());
-        if(patientByDb == null){
-            throw new RuntimeException("Patient is not exist");
-        }
         Booking booking = new Booking();
+        booking.setPatientId(requestForBooking.getPatientId());
         booking.setDepartmentId(requestForBooking.getDepartmentId());
         booking.setDoctorId(requestForBooking.getDoctorId());
         booking.setDisease(requestForBooking.getDisease());
         booking.setAppointmentDate(requestForBooking.getAppointmentDate());
+        if(booking.getAppointmentDate().isBefore(LocalDate.now())){
+            booking.setStatus(AppointmentStatus.NOT_VISITED);
+        }
+        else{
+            booking.setStatus(AppointmentStatus.BOOKED);
+        }
         Booking savedBooking = bookingRepository.save(booking);
         return new BookingResponse(
                 savedBooking.getBookingId(),
@@ -66,32 +78,75 @@ public class Bookingimpl implements BookingInterface {
                 patientByDb.getPermanentAddress(),
                 doctorByDb.getDoctorName(),
                 savedBooking.getDisease(),
-                savedBooking.getAppointmentDate()
+                savedBooking.getAppointmentDate(),
+                savedBooking.getStatus()
         );
     }
 
     @Override
-    public List<Booking> getAllAppointmentsForDoctor(String doctorId){
+    public List<BookingHistoryResponse> getAllAppointmentsForDoctor(String doctorId){
 
         List<Booking> bookings = bookingRepository.findByDoctorId(doctorId);
 
-        if(bookings == null){
-            throw new RuntimeException("There is no booking exist for this doctor");
+        if (bookings == null || bookings.isEmpty()) {
+            throw new RuntimeException("There is no booking exist for this Doctor");
         }
-        logger.info("Inside booking implementation for getting all appointments for a doctor");
-        return bookings;
+
+        return bookings.stream().map(booking -> {
+            Patient patient = patientRepository.findByPatientId(booking.getPatientId());
+
+            Doctor doctor = doctorRepository.findByDoctorId(booking.getDoctorId());
+
+            return new BookingHistoryResponse(
+                    booking.getBookingId(),
+                    patient.getPatientName(),
+                    doctor.getDoctorName(),
+                    doctor.getPhoneNo(),
+                    patient.getPhoneNo(),
+                    booking.getDisease(),
+                    booking.getAppointmentDate(),
+                    booking.getStatus()
+            );
+        }).toList();
     }
 
     @Override
-    public List<Booking> getAllAppointmentsForPatient(String patientId) {
+    public List<BookingHistoryResponse> getAllAppointmentsForPatient(String patientId) {
+
         List<Booking> bookings = bookingRepository.findByPatientId(patientId);
 
-        if (bookings == null) {
+        if (bookings == null || bookings.isEmpty()) {
             throw new RuntimeException("There is no booking exist for this patient");
         }
-        logger.info("Inside booking implementation for getting all appointments for a patient");
 
-        return bookings;
+        return bookings.stream().map(booking -> {
+            Patient patient = patientRepository.findByPatientId(booking.getPatientId());
+
+            Doctor doctor = doctorRepository.findByDoctorId(booking.getDoctorId());
+
+            return new BookingHistoryResponse(
+                    booking.getBookingId(),
+                    patient.getPatientName(),
+                    doctor.getDoctorName(),
+                    doctor.getPhoneNo(),
+                    patient.getPhoneNo(),
+                    booking.getDisease(),
+                    booking.getAppointmentDate(),
+                    booking.getStatus()
+            );
+        }).toList();
+    }
+
+    @Override
+    public String markVisited(String bookingId){
+        Booking booking = bookingRepository.findByBookingId(bookingId);
+
+        if(booking == null){
+            throw new RuntimeException("Booking not found");
+        }
+        booking.setStatus(AppointmentStatus.VISITED);
+        bookingRepository.save(booking);
+        return "Patient marked as visited";
     }
 
 }

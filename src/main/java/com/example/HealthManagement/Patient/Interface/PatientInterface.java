@@ -6,13 +6,13 @@ import com.example.HealthManagement.Patient.Request.RequestForPatient;
 import com.example.HealthManagement.Patient.Request.RequestForPatientLogin;
 
 public interface PatientInterface {
-    Patient addpatient(RequestForPatient requestForPatient) throws Exception;
+    Patient addPatient(RequestForPatient requestForPatient) throws Exception;
 
-    Patient loginpatient(RequestForPatientLogin requestForPatientLogin);
+    Patient loginPatient(RequestForPatientLogin requestForPatientLogin);
 
-    Patient getpatientbypatientid(String patientId);
+    Patient getPatientByPatientId(String patientId);
 
     Patient getpatient(String email_id);
 
-    Patient updatepatientbypatientid(String patientId, RequestForPatient requestForPatient);
+    Patient updatePatientByPatientId(String patientId, RequestForPatient requestForPatient);
 }

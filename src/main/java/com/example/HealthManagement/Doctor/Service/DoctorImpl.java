@@ -1,5 +1,8 @@
 package com.example.HealthManagement.Doctor.Service;
 
+import com.example.HealthManagement.Appointment.Entities.AppointmentStatus;
+import com.example.HealthManagement.Appointment.Entities.Booking;
+import com.example.HealthManagement.Appointment.Repository.BookingRepository;
 import com.example.HealthManagement.Departments.Entity.Department;
 import com.example.HealthManagement.Departments.Repository.DepartmentRepository;
 import com.example.HealthManagement.Doctor.Entities.Degree;
@@ -32,19 +35,21 @@ public class DoctorImpl implements DoctorInterface {
     @Autowired
     private DegreeRepository degreeRepository;
 
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @Override
-    public Degree adddegree(Degree degree) {
+    public Degree addDegree(Degree degree) {
         return degreeRepository.save(degree);
     }
 
     @Override
-    public List<Degree> alldegree() {
+    public List<Degree> allDegree() {
         return degreeRepository.findAll();
     }
 
     @Override
-    public Doctor postdoctor(RequestForDoctor requestForDoctor) {
+    public Doctor postDoctor(RequestForDoctor requestForDoctor) {
 
         if (!requestForDoctor.getPassword().equals(requestForDoctor.getConfirmPassword())) {
             throw new RuntimeException("Password Do not Match");
@@ -58,14 +63,15 @@ public class DoctorImpl implements DoctorInterface {
             throw new RuntimeException("Doctor already exists with this phone number");
         }
 
-        Department departmentInDbByName = departmentRepository.findByDeptName(requestForDoctor.getDepartmentName());
-        if(departmentInDbByName.getDeptName() == null || departmentInDbByName.getDeptName().isEmpty()){
-            throw new RuntimeException("Provided DepartmentName does not exist in database");
+        Degree degreeInDbById = degreeRepository.findByDegreeId(requestForDoctor.getDegreeId());
+        if(degreeInDbById == null){
+            throw new RuntimeException("Degree does not exist in database");
         }
 
-        Degree degreeInDBByName = degreeRepository.findByDegreeName(requestForDoctor.getDegree());
-        if(degreeInDBByName.getDegreeName() == null || degreeInDBByName.getDegreeName().isEmpty()){
-            throw new RuntimeException("Degree is not exist in our database");
+        Department departmentInDbById = departmentRepository.findByDepartmentId(requestForDoctor.getDepartmentId());
+
+        if(departmentInDbById == null){
+            throw new RuntimeException("Provided Department does not exist in database");
         }
 
         Doctor doctor = new Doctor();
@@ -74,9 +80,9 @@ public class DoctorImpl implements DoctorInterface {
         doctor.setDoctorEmail(requestForDoctor.getDoctorEmail());
         doctor.setPhoneNo(requestForDoctor.getPhoneNo());
         doctor.setDoctorDob(requestForDoctor.getDoctorDob());
-        doctor.setDegree(requestForDoctor.getDegree());
+        doctor.setDegreeId(degreeInDbById.getDegreeName());
         doctor.setExperience(requestForDoctor.getExperience());
-        doctor.setDepartmentName(requestForDoctor.getDepartmentName());
+        doctor.setDepartmentId(departmentInDbById.getDepartmentId());
         doctor.setAddressLine1(requestForDoctor.getAddressLine1());
         doctor.setAddressLine2(requestForDoctor.getAddressLine2());
 
@@ -89,7 +95,7 @@ public class DoctorImpl implements DoctorInterface {
     }
 
     @Override
-    public DoctorDto logindoctor(RequestForLogin requestForLogin) {
+    public DoctorDto loginDoctor(RequestForLogin requestForLogin) {
 
         Doctor doctor = doctorRepository.findByDoctorEmail(requestForLogin.getDoctorEmail().trim())
                 .orElseThrow(() -> new RuntimeException("Invalid Email or Password"));
@@ -105,25 +111,34 @@ public class DoctorImpl implements DoctorInterface {
     }
 
     @Override
-    public Doctor getdoctorbydoctorid(String doctorId) {
+    public Doctor getDoctorByDoctorId(String doctorId) {
         Doctor doctor = doctorRepository.findByDoctorId(doctorId);
         return doctor;
     }
 
     @Override
-    public Doctor updatedoctordata(String doctorId, RequestForDoctor requestForDoctor) {
+    public Doctor updateDoctorData(String doctorId, RequestForDoctor requestForDoctor) {
         Doctor existingDoctor = doctorRepository.findByDoctorId(doctorId);
         if(existingDoctor == null){
             throw new RuntimeException("Doctor Not exist");
         }
 
-        existingDoctor.setDegree(requestForDoctor.getDegree());
+        Degree degreeInDBByName = degreeRepository.findByDegreeId(requestForDoctor.getDegreeId());
+        if(degreeInDBByName.getDegreeName() == null || degreeInDBByName.getDegreeId().isEmpty()){
+            throw new RuntimeException("Degree is not exist in our database");
+        }
+
+        Department departmentInDbByName = departmentRepository.findByDepartmentId(requestForDoctor.getDepartmentId());
+        if(departmentInDbByName.getDeptName() == null || departmentInDbByName.getDepartmentId().isEmpty()){
+            throw new RuntimeException("Provided DepartmentName does not exist in database");
+        }
+
+        existingDoctor.setDegreeId(degreeInDBByName.getDegreeName());
         existingDoctor.setExperience(requestForDoctor.getExperience());
-        existingDoctor.setDepartmentName(requestForDoctor.getDepartmentName());
+        existingDoctor.setDepartmentId(departmentInDbByName.getDeptName());
         existingDoctor.setAddressLine1(requestForDoctor.getAddressLine1());
         existingDoctor.setAddressLine2(requestForDoctor.getAddressLine2());
 
         return doctorRepository.save(existingDoctor);
     }
-
 }
