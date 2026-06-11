@@ -26,7 +26,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of(
-                "https://hospital-management-system-frontend-omega.vercel.app"
+                "https://hospital-management-system-frontend-omega.vercel.app/"
         ));
 
         configuration.setAllowedMethods(List.of(
