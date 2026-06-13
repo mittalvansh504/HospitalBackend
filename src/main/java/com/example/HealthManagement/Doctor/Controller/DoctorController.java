@@ -24,11 +24,15 @@ public class DoctorController {
     @Autowired
     private DoctorRepository doctorRepository;
 
+    @GetMapping("/healthCheck")
+    public String healthCheck(){
+        return "Application is running";
+    }
+
     @PostMapping("/addDegree")
     public Degree addDegree(@RequestBody Degree degree){
         return doctorInterface.addDegree(degree);
     }
-
     @GetMapping("/allDegree")
     public List<Degree> allDegree(){
         return doctorInterface.allDegree();
