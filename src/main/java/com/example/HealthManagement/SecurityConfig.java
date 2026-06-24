@@ -26,7 +26,8 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of(
-                "https://hospital-management-system-frontend-sepia.vercel.app/"
+                "http://localhost:5173",
+                "https://hospital-management-system-frontend-sepia.vercel.app"
         ));
 
         configuration.setAllowedMethods(List.of(
