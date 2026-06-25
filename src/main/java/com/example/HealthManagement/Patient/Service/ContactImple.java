@@ -1,7 +1,5 @@
 package com.example.HealthManagement.Patient.Service;
 
-
-
 import com.example.HealthManagement.Patient.Entities.Contact;
 import com.example.HealthManagement.Patient.Repository.ContactRepository;
 import com.example.HealthManagement.Patient.Request.RequestForContact;
