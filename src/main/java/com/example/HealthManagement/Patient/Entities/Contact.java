@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Contact {
 
     @Id
-    private String patientId;
+    private String contactId;
     private String name;
     private String email;
     private String phoneNo;
